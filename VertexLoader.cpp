@@ -4,9 +4,9 @@
 #include <cstdio>
 
 #ifdef _WIN32
-#define SSCANF scanf_s
+#define SSCANF sscanf_s
 #else
-#define SSCANF scanf
+#define SSCANF sscanf
 #endif
 
 void GetVertexCount(const char* str, size_t sLen, int *pCount)
