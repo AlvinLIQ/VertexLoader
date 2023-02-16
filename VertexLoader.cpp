@@ -3,6 +3,12 @@
 #include <cstring>
 #include <cstdio>
 
+#ifdef _WIN32
+#define SSCANF scanf_s
+#else
+#define SSCANF scanf
+#endif
+
 void GetVertexCount(const char* str, size_t sLen, int *pCount)
 {
     if (sLen == -1)
@@ -27,7 +33,7 @@ void LoadVerticesFromStr(const char *str, Vertex *pVertices, int *pVertexCount)
     *pVertices = (Vertex)malloc(*pVertexCount * sizeof(Vertex_T));
     for (int i = 0, j = 0; i < *pVertexCount; i++)
     {
-        sscanf_s(str + j, "(%f,%f,%f), (%f,%f,%f)\n", 
+        SSCANF(str + j, "(%f,%f,%f), (%f,%f,%f)\n", 
             &(*pVertices)[i].position[0],&(*pVertices)[i].position[1],&(*pVertices)[i].position[2], 
             &(*pVertices)[i].color[0],&(*pVertices)[i].color[1],&(*pVertices)[i].color[2]);
         while(str[j++] != '\n');
