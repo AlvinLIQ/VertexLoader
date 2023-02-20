@@ -27,6 +27,7 @@ typedef struct
 
 void GetVertexCount(const char* str, size_t sLen, int *pCount);
 void LoadVerticesFromStr(const char *str, size_t sLen, Vertex *pVertices, int *pVertexCount);
+void LoadIndexFromStr(const char *str, size_t sLen, IndexedVertex *pIndexedVertices);
 void LoadIndexedVerticesFromStr(const char *str, IndexedVertex *pIndexedVertices);
 template<typename T>
 size_t StrToNum(T *num, const char *str, size_t sLen = -1);
