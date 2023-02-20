@@ -45,7 +45,7 @@ void LoadVerticesFromStr(const char *str, size_t sLen, Vertex *pVertices, int *p
     }
 }
 
-void LoadIndexFromStr(const char *str, size_t sLen, IndexedVertex *pIndexedVertices)
+void LoadIndexFromStr(const char *str, size_t sLen, std::vector<Index_T> &indices)
 {
     if (sLen == -1)
         sLen = strlen(str);
@@ -56,11 +56,11 @@ void LoadIndexFromStr(const char *str, size_t sLen, IndexedVertex *pIndexedVerti
     {
         sLen -= i;
         i = StrToNum(&indexNum, &str[i], sLen);
-        pIndexedVertices->indices.push_back(indexNum);
+        indices.push_back(indexNum);
     }while(i && i < sLen);
 }
 
-void LoadIndexedVerticesFromStr(const char *str, IndexedVertex *pVertices)
+void LoadIndexedVerticesFromStr(const char *str, IndexedVertex *pIndexedVertices)
 {
     size_t sLen = strlen(str);
     if (!sLen)
@@ -70,8 +70,8 @@ void LoadIndexedVerticesFromStr(const char *str, IndexedVertex *pVertices)
     ++indexofIndex;
 
     
-    LoadVerticesFromStr(str, indexofIndex, &pVertices->vertices, &pVertices->vertexCount);
-    LoadIndexFromStr(&str[indexofIndex], sLen - indexofIndex, pVertices);
+    LoadVerticesFromStr(str, indexofIndex, &pIndexedVertices->vertices, &pIndexedVertices->vertexCount);
+    LoadIndexFromStr(&str[indexofIndex], sLen - indexofIndex, pIndexedVertices->indices);
 }
 
 template<typename T>
