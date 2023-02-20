@@ -1,7 +1,11 @@
-#include "Headers/VertexLoader.h"
+#include "Headers/VertexLoader.hpp"
+#include <stdexcept>
+
 #include <cstdlib>
 #include <cstring>
 #include <cstdio>
+
+
 
 #ifdef _WIN32
 #define SSCANF sscanf_s
@@ -23,9 +27,10 @@ void GetVertexCount(const char* str, size_t sLen, int *pCount)
     }
 }
 
-void LoadVerticesFromStr(const char *str, Vertex *pVertices, int *pVertexCount)
+void LoadVerticesFromStr(const char *str, size_t sLen, Vertex *pVertices, int *pVertexCount)
 {
-    size_t sLen = strlen(str);
+    if (sLen == -1)
+        sLen = strlen(str);
     GetVertexCount(str, sLen, pVertexCount);
     if (*pVertexCount <= 0)
         return;
@@ -40,7 +45,61 @@ void LoadVerticesFromStr(const char *str, Vertex *pVertices, int *pVertexCount)
     }
 }
 
-void FreeVerticesMemory(Vertex *pVertices)
+void LoadIndexFromStr(const char *str, size_t sLen, IndexedVertex *pIndexedVertices)
+{
+    if (sLen == -1)
+        sLen = strlen(str);
+    
+    Index_T indexNum;
+    size_t i = 0;
+    do
+    {
+        sLen -= i;
+        i = StrToNum(&indexNum, &str[i], sLen);
+        pIndexedVertices->indices.push_back(indexNum);
+    }while(i && i < sLen);
+}
+
+void LoadIndexedVerticesFromStr(const char *str, IndexedVertex *pVertices)
+{
+    size_t sLen = strlen(str);
+    if (!sLen)
+        throw std::runtime_error("You put a empty string here, and it doesn't make any sense");
+    size_t indexofIndex = sLen;
+    while (indexofIndex || str[--indexofIndex] != '\n');
+    ++indexofIndex;
+
+    
+    LoadVerticesFromStr(str, indexofIndex, &pVertices->vertices, &pVertices->vertexCount);
+    LoadIndexFromStr(&str[indexofIndex], sLen - indexofIndex, pVertices);
+}
+
+template<typename T>
+size_t StrToNum(T *num, const char *str, size_t sLen)
+{
+    if (sLen == -1)
+        sLen = strlen(str);
+
+    *num = 0;
+    char c;
+    size_t i;
+    for (i = 0; i < sLen; i++)
+    {
+        c = str[i];
+        if (c >= '0' && c <= '9')
+        {
+            *num = *num * 10 + c - '0';
+        }
+        else
+        {
+            break;
+        }
+    }
+
+    return i;
+}
+
+void FreeVerticesMemory(void **pVertices)
 {
     if (pVertices && *pVertices)
     {

@@ -24,7 +24,7 @@ void LoadVerticesFromStr(const char *str, Vertex *pVertices, int *pVertexCount)
     if (*pVertexCount <= 0)
         return;
 
-    *pVertices = (Vertex*)malloc(*pVertexCount * sizeof(Vertex_T));
+    *pVertices = malloc(*pVertexCount * sizeof(Vertex_T));
     for (int i = 0, j = 0; i < *pVertexCount; i++)
     {
         sscanf(str + j, "(%f,%f,%f), (%f,%f,%f)\n", 
@@ -34,7 +34,7 @@ void LoadVerticesFromStr(const char *str, Vertex *pVertices, int *pVertexCount)
     }
 }
 
-void FreeVerticesMemory(Vertex *pVertices)
+void FreeVerticesMemory(void **pVertices)
 {
     if (pVertices && *pVertices)
     {
