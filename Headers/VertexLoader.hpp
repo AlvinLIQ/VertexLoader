@@ -20,7 +20,7 @@ typedef struct
 {
     Vertex vertices;
     int vertexCount;
-
+    char indexType;
     std::vector<Index_T> indices;
 }IndexedVertex;
 

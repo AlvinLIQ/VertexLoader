@@ -69,7 +69,8 @@ void LoadIndexedVerticesFromStr(const char *str, IndexedVertex *pIndexedVertices
     while (indexofIndex && str[--indexofIndex] != '\n');
     ++indexofIndex;
     LoadVerticesFromStr(str, indexofIndex, &pIndexedVertices->vertices, &pIndexedVertices->vertexCount);
-    LoadIndexFromStr(&str[indexofIndex], sLen - indexofIndex, pIndexedVertices->indices);
+    pIndexedVertices->indexType = str[indexofIndex];
+    LoadIndexFromStr(&str[indexofIndex + 1], sLen - indexofIndex - 1, pIndexedVertices->indices);
 }
 
 template<typename T>
