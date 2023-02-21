@@ -45,7 +45,7 @@ void LoadVerticesFromStr(const char *str, size_t sLen, Vertex *pVertices, int *p
     }
 }
 
-void LoadIndexFromStr(const char *str, size_t sLen, std::vector<Index_T> &indices, char *pIndexType)
+void LoadIndexFromStr(const char *str, size_t sLen, std::vector<Index_T> &indices, Index_T *pIndexType)
 {
     if (sLen == 0)
         return;

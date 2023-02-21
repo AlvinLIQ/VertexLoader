@@ -26,7 +26,7 @@ typedef struct
 
 void GetVertexCount(const char* str, std::size_t sLen, int *pCount);
 void LoadVerticesFromStr(const char *str, std::size_t sLen, Vertex *pVertices, int *pVertexCount);
-void LoadIndexFromStr(const char *str, std::size_t sLen, std::vector<Index_T> &indices, char *pIndexType);
+void LoadIndexFromStr(const char *str, std::size_t sLen, std::vector<Index_T> &indices, Index_T *pIndexType);
 void LoadIndexedVerticesFromStr(const char *str, IndexedVertex *pIndexedVertices);
 void FreeVerticesMemory(void **pVertices);
 
