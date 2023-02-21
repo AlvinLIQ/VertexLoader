@@ -52,13 +52,12 @@ void LoadIndexFromStr(const char *str, size_t sLen, std::vector<Index_T> &indice
     
     Index_T indexNum;
     size_t i = 0;
-    do
+    while (i < sLen)
     {
-        sLen -= i;
-        str += i;
-        i = StrToNum(&indexNum, &str[i], sLen);
+        indexNum = static_cast<Index_T>(atoi(&str[i]));
         indices.push_back(indexNum);
-    }while(i && i < sLen);
+        while(i < sLen && str[i++] != ' ');
+    }
 }
 
 void LoadIndexedVerticesFromStr(const char *str, IndexedVertex *pIndexedVertices)
