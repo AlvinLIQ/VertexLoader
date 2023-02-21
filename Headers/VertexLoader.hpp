@@ -16,7 +16,7 @@ typedef struct
     float color[3];
 } Vertex_T;
 typedef Vertex_T* Vertex;
-typedef uint16_t Index_T;
+typedef uint32_t Index_T;
 typedef struct
 {
     Vertex vertices;

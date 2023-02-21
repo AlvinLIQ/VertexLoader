@@ -47,7 +47,7 @@ void LoadVerticesFromStr(const char *str, size_t sLen, Vertex *pVertices, int *p
 
 void LoadIndexFromStr(const char *str, size_t sLen, std::vector<Index_T> &indices)
 {
-    if (sLen == -1)
+    if (sLen == (size_t)-1)
         sLen = strlen(str);
     
     Index_T indexNum;
@@ -55,6 +55,7 @@ void LoadIndexFromStr(const char *str, size_t sLen, std::vector<Index_T> &indice
     do
     {
         sLen -= i;
+        str += i;
         i = StrToNum(&indexNum, &str[i], sLen);
         indices.push_back(indexNum);
     }while(i && i < sLen);
@@ -66,10 +67,8 @@ void LoadIndexedVerticesFromStr(const char *str, IndexedVertex *pIndexedVertices
     if (!sLen)
         throw std::runtime_error("You put a empty string here, and it doesn't make any sense");
     size_t indexofIndex = sLen;
-    while (indexofIndex || str[--indexofIndex] != '\n');
+    while (indexofIndex && str[--indexofIndex] != '\n');
     ++indexofIndex;
-
-    
     LoadVerticesFromStr(str, indexofIndex, &pIndexedVertices->vertices, &pIndexedVertices->vertexCount);
     LoadIndexFromStr(&str[indexofIndex], sLen - indexofIndex, pIndexedVertices->indices);
 }
@@ -82,8 +81,10 @@ size_t StrToNum(T *num, const char *str, size_t sLen)
 
     *num = 0;
     char c;
-    size_t i;
-    for (i = 0; i < sLen; i++)
+    size_t i = 0;
+    while(str[i] == ' ')
+        ++i;
+    for (; i < sLen; i++)
     {
         c = str[i];
         if (c >= '0' && c <= '9')
