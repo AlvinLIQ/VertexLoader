@@ -20,16 +20,14 @@ typedef struct
 {
     Vertex vertices;
     int vertexCount;
-    char indexType;
+    Index_T indexType;
     std::vector<Index_T> indices;
 }IndexedVertex;
 
 void GetVertexCount(const char* str, std::size_t sLen, int *pCount);
 void LoadVerticesFromStr(const char *str, std::size_t sLen, Vertex *pVertices, int *pVertexCount);
-void LoadIndexFromStr(const char *str, std::size_t sLen, std::vector<Index_T> &indices);
+void LoadIndexFromStr(const char *str, std::size_t sLen, std::vector<Index_T> &indices, char *pIndexType);
 void LoadIndexedVerticesFromStr(const char *str, IndexedVertex *pIndexedVertices);
-template<typename T>
-std::size_t StrToNum(T *num, const char *str, std::size_t sLen = -1);
 void FreeVerticesMemory(void **pVertices);
 
 #endif

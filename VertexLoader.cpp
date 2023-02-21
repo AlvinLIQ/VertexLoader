@@ -45,13 +45,19 @@ void LoadVerticesFromStr(const char *str, size_t sLen, Vertex *pVertices, int *p
     }
 }
 
-void LoadIndexFromStr(const char *str, size_t sLen, std::vector<Index_T> &indices)
+void LoadIndexFromStr(const char *str, size_t sLen, std::vector<Index_T> &indices, char *pIndexType)
 {
+    if (sLen == 0)
+        return;
     if (sLen == (size_t)-1)
         sLen = strlen(str);
     
-    Index_T indexNum;
     size_t i = 0;
+
+    *pIndexType = static_cast<Index_T>(atoi(&str[i]));
+    while(i < sLen && str[i++] != ' ');
+
+    Index_T indexNum;
     while (i < sLen)
     {
         indexNum = static_cast<Index_T>(atoi(&str[i]));
@@ -69,35 +75,7 @@ void LoadIndexedVerticesFromStr(const char *str, IndexedVertex *pIndexedVertices
     while (indexofIndex && str[--indexofIndex] != '\n');
     ++indexofIndex;
     LoadVerticesFromStr(str, indexofIndex, &pIndexedVertices->vertices, &pIndexedVertices->vertexCount);
-    pIndexedVertices->indexType = str[indexofIndex];
-    LoadIndexFromStr(&str[indexofIndex + 1], sLen - indexofIndex - 1, pIndexedVertices->indices);
-}
-
-template<typename T>
-size_t StrToNum(T *num, const char *str, size_t sLen)
-{
-    if (sLen == -1)
-        sLen = strlen(str);
-
-    *num = 0;
-    char c;
-    size_t i = 0;
-    while(str[i] == ' ')
-        ++i;
-    for (; i < sLen; i++)
-    {
-        c = str[i];
-        if (c >= '0' && c <= '9')
-        {
-            *num = *num * 10 + c - '0';
-        }
-        else
-        {
-            break;
-        }
-    }
-
-    return i;
+    LoadIndexFromStr(&str[indexofIndex], sLen - indexofIndex, pIndexedVertices->indices, &pIndexedVertices->indexType);
 }
 
 void FreeVerticesMemory(void **pVertices)
